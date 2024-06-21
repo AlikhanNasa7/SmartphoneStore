@@ -22,7 +22,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class SuccessTemplateView(TitleMixin, TemplateView):
     template_name = 'orders/success.html'
-    title = 'Store - Спасибо за заказ!'
+    title = 'Техника от Рахата - Спасибо за заказ!'
 
 
 class CanceledTemplateView(TitleMixin, TemplateView):
@@ -32,7 +32,7 @@ class CanceledTemplateView(TitleMixin, TemplateView):
 
 class OrderListView(TitleMixin, ListView):
     template_name = 'orders/orders.html'
-    title = 'Store - Заказы'
+    title = 'Техника от Рахата - Заказы'
     queryset = Order.objects.all()
     ordering = ('-created',)
 
@@ -47,7 +47,7 @@ class OrderDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(OrderDetailView, self).get_context_data(**kwargs)
-        context['title'] = f'Store - Заказ #{self.object.id}'
+        context['title'] = f'Техника от Рахата - Заказ #{self.object.id}'
         return context
 
 
@@ -55,7 +55,7 @@ class OrderCreateView(TitleMixin, CreateView):
     template_name = 'orders/order-create.html'
     form_class = OrderForm
     success_url = reverse_lazy('orders:order_create')
-    title = 'Store - Оформление заказа'
+    title = 'Техника от Рахата - Оформление заказа'
 
     def post(self, request, *args, **kwargs):
         super(OrderCreateView, self).post(request, *args, **kwargs)
@@ -80,10 +80,13 @@ def stripe_webhook_view(request):
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
     event = None
 
+    print(1)
+
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
         )
+        print(event)
     except ValueError:
         # Invalid payload
         return HttpResponse(status=400)

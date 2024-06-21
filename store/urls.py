@@ -26,7 +26,7 @@ urlpatterns = [
     path('', include('products.urls')),
     path('accounts/', include('allauth.urls')),
     path('orders/', include('orders.urls')),
-    path('/webhook/stripe/', stripe_webhook_view, name='stripe_webhook'),
+    path('webhook/', stripe_webhook_view, name='stripe_webhook'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
